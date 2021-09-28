@@ -30,9 +30,9 @@ final class Pocker {
         }
 
         SetScore score() {
-            var score1 = player1.score();
-            var score2 = player2.score();
-            return new SetScore(score1, score2);
+            var playerScore1 = player1.score();
+            var playerScore2 = player2.score();
+            return playerScore1.whoWins(playerScore2);
         }
     }
 }

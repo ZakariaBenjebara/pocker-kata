@@ -2,33 +2,37 @@ package com.kata.pocker;
 
 record PlayerScore(String name, Rank rank) {
 
-    PlayerScore whoWins(PlayerScore opponent) {
-        if (rank instanceof Rank.HighCard thisRank && opponent.rank instanceof Rank.HighCard opponentRank) {
-            return highCardWinner(opponent, thisRank, opponentRank);
+    SetScore whoWins(PlayerScore opponent) {
+        if (shouldCalculateHighCardScore(opponent)) {
+            return calculateHighCardScoreWinner(opponent);
         } else {
-            return totalScoreWinner(opponent);
+            return calculateTotalScore(opponent);
         }
     }
 
-    private PlayerScore totalScoreWinner(PlayerScore opponent) {
+    private SetScore calculateTotalScore(PlayerScore opponent) {
         if (score() > opponent.score()) {
-            return this;
+            return new SetScore(this, opponent);
         } else if (score() < opponent.score()) {
-            return opponent;
+            return new SetScore(opponent, this);
         }
-        return new PlayerScore(this.name, new Rank.TieHighCard());
+        return SetScore.tie(this.name(), opponent.name());
     }
 
-    private PlayerScore highCardWinner(PlayerScore opponent,
-                                       Rank.HighCard thisRank,
-                                       Rank.HighCard opponentRank) {
-        Rank result = thisRank.winner(opponentRank);
+    private SetScore calculateHighCardScoreWinner(PlayerScore opponent) {
+        var thisRank = (Rank.HighCard) this.rank;
+        var opponentRank = (Rank.HighCard) opponent.rank;
+        var result = thisRank.winner(opponentRank);
         if (result instanceof Rank.WinnerHighCard) {
-            return new PlayerScore(name, result);
+            return new SetScore(new PlayerScore(this.name, result), opponent);
         } else if (result instanceof Rank.LoserHighCard) {
-            return new PlayerScore(opponent.name, result);
+            return new SetScore(new PlayerScore(opponent.name, result), this);
         }
-        return new PlayerScore(opponent.name, new Rank.TieHighCard());
+        return SetScore.tie(this.name(), opponent.name());
+    }
+
+    private boolean shouldCalculateHighCardScore(PlayerScore opponent) {
+        return rank instanceof Rank.HighCard && opponent.rank instanceof Rank.HighCard;
     }
 
     private int score() {

@@ -24,8 +24,10 @@ final class Hand {
 
     Rank doScore() {
         for (var handScoring : handScoringList) {
-            var handStats = new HandStats();
-            cards.forEach(handStats::analyse);
+            var handStats = HandStats.initialize();
+            for (Card card : cards) {
+                handStats = handStats.analyse(card);
+            }
             var score = handScoring.doScoring(handStats);
             if (score != Rank.NONE) {
                 return score;
@@ -44,7 +46,7 @@ final class Hand {
         handScoring.add(new HandScoring.Straight());
         handScoring.add(new HandScoring.ThreeOfKind());
         handScoring.add(new HandScoring.TwoPair());
-        handScoring.add(new HandScoring.Pair());
+        handScoring.add(new HandScoring.OnePair());
         handScoring.add(new HandScoring.Highest());
         return unmodifiableList(handScoring);
     }

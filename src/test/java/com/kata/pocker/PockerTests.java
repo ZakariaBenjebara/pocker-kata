@@ -15,7 +15,7 @@ class PockerTests {
                 .hands("2C", "3H", "4S", "8C", "AH")
             .score();
 
-        assertEquals("White wins. - with high card: Ace", setScore.report());
+        assertEquals("White wins. - with high card: Ace", setScore.printReport());
     }
 
 
@@ -28,7 +28,7 @@ class PockerTests {
                 .hands("2S", "8S", "AS", "QS", "3S")
             .score();
 
-        assertEquals("Black wins. - with full house", setScore.report());
+        assertEquals("Black wins. - with full house", setScore.printReport());
     }
 
     @Test
@@ -40,7 +40,7 @@ class PockerTests {
                 .hands("2C", "3H", "4S", "8C", "KH")
             .score();
 
-        assertEquals("Black wins. - with high card: 9", setScore.report());
+        assertEquals("Black wins. - with high card: 9", setScore.printReport());
     }
 
     @Test
@@ -52,6 +52,6 @@ class PockerTests {
                 .hands("2C", "3H", "5C", "9S", "KH")
             .score();
 
-        assertEquals("Tie.", setScore.report());
+        assertEquals("Tie.", setScore.printReport());
     }
 }

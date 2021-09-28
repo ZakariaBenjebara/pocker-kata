@@ -1,29 +1,24 @@
 package com.kata.pocker;
 
-final class PlayerScoreView {
-    private final PlayerScore playerScore;
+record PlayerScoreView(PlayerScore playerScore) {
 
-    PlayerScoreView(PlayerScore playerScore) {
-        this.playerScore = playerScore;
-    }
-
-    String toRepresentation() {
+    String toView() {
         if (playerScore.rank() instanceof Rank.TieHighCard) {
             return "Tie.";
         }
         return new StringBuilder(playerScore.name())
                 .append(" wins.")
                 .append(" - with ")
-                .append(toRankRepresentation(playerScore.rank()))
+                .append(toRankView(playerScore.rank()))
                 .toString();
     }
 
-    private String toRankRepresentation(Rank rank) {
+    private String toRankView(Rank rank) {
         if (rank instanceof Rank.WinnerHighCard highCard) {
-            return "high card: %s".formatted(toRepresentation(highCard.getCardValue()));
+            return "high card: %s".formatted(toView(highCard.getCardValue()));
         }
         if (rank instanceof Rank.LoserHighCard highCard) {
-            return "high card: %s".formatted(toRepresentation(highCard.getCardValue()));
+            return "high card: %s".formatted(toView(highCard.getCardValue()));
         }
         if (rank instanceof Rank.RoyalFlush) {
             return "royal flush";
@@ -31,7 +26,7 @@ final class PlayerScoreView {
         if (rank instanceof Rank.Straight) {
             return "straight";
         }
-        if (rank instanceof Rank.Pair) {
+        if (rank instanceof Rank.OnePair) {
             return "pair";
         }
         if (rank instanceof Rank.TwoPair) {
@@ -55,7 +50,7 @@ final class PlayerScoreView {
         return "";
     }
 
-    private String toRepresentation(CardValue cardValue) {
+    private String toView(CardValue cardValue) {
         return switch (cardValue.value()) {
             case "A" -> "Ace";
             case "K" -> "King";

@@ -130,7 +130,7 @@ class HandScoringTests {
                 new Card("7", CardSuit.DIAMOND)
         );
         Rank rank = new Hand(cards).doScore();
-        assertTrue(rank instanceof Rank.Pair);
+        assertTrue(rank instanceof Rank.OnePair);
         assertEquals(20, rank.priority());
     }
 

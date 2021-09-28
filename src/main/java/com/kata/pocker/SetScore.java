@@ -1,22 +1,19 @@
 package com.kata.pocker;
 
-final class SetScore {
-    private final PlayerScore playerScore1;
-    private final PlayerScore playerScore2;
+record SetScore(PlayerScore winner, PlayerScore loser) {
 
-    SetScore(PlayerScore playerScore1, PlayerScore playerScore2) {
-        this.playerScore1 = playerScore1;
-        this.playerScore2 = playerScore2;
+    static SetScore tie(String playerName1, String playerName2) {
+        return new SetScore(new PlayerScore(playerName1, new Rank.TieHighCard()),
+                new PlayerScore(playerName2, new Rank.TieHighCard()));
     }
 
-    String report() {
-        var result = playerScore1.whoWins(playerScore2);
-        return Report.winner(result).representation();
+    String printReport() {
+        return Report.winner(winner).view();
     }
 
-    private record Report(String representation) {
+    private record Report(String view) {
         static Report winner(PlayerScore playerScore) {
-            return new Report(new PlayerScoreView(playerScore).toRepresentation());
+            return new Report(new PlayerScoreView(playerScore).toView());
         }
     }
 }
