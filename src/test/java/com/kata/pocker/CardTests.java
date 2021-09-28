@@ -70,7 +70,7 @@ class CardTests {
 
     @Test
     void shouldCreate10Card() {
-        var cardValue = new CardValue("10");
+        var cardValue = new CardValue("T");
         assertEquals(9, cardValue.priority());
         assertEquals(10, cardValue.cardScore());
     }

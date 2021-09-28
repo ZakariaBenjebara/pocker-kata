@@ -52,6 +52,7 @@ record PlayerScoreView(PlayerScore playerScore) {
 
     private String toView(CardValue cardValue) {
         return switch (cardValue.value()) {
+            case "T" -> "10";
             case "A" -> "Ace";
             case "K" -> "King";
             case "Q" -> "Queen";

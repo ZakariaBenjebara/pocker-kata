@@ -7,7 +7,7 @@ record SetScore(PlayerScore winner, PlayerScore loser) {
                 new PlayerScore(playerName2, new Rank.TieHighCard()));
     }
 
-    String printReport() {
+    String printWinnerReport() {
         return Report.winner(winner).view();
     }
 

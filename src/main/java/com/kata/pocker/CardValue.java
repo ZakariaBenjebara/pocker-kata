@@ -7,8 +7,7 @@ import static java.lang.Integer.parseInt;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 final class CardValue {
-    private static final String CARD_SYMBOLS = "(?i)[2-9]{1}|10|J|Q|K|A";
-    static final CardValue LOWEST = new CardValue("2");
+    private static final String CARD_SYMBOLS = "(?i)[2-9]{1}|T|J|Q|K|A";
 
     private final String value;
     private final int priority;
@@ -31,7 +30,7 @@ final class CardValue {
             return parseInt(value);
         }
         return switch (value.toUpperCase(Locale.ENGLISH)) {
-            case "J", "Q", "K", "A" -> 10;
+            case "T", "J", "Q", "K", "A" -> 10;
             default -> throw new IllegalStateException("Unexpected value: " + value);
         };
     }
@@ -56,6 +55,7 @@ final class CardValue {
             return parseInt(value) - 1;
         }
         return switch (value.toUpperCase(Locale.ENGLISH)) {
+            case "T" -> 9;
             case "J" -> 10;
             case "Q" -> 11;
             case "K" -> 12;

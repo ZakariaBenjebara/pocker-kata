@@ -15,7 +15,7 @@ class PockerTests {
                 .hands("2C", "3H", "4S", "8C", "AH")
             .score();
 
-        assertEquals("White wins. - with high card: Ace", setScore.printReport());
+        assertEquals("White wins. - with high card: Ace", setScore.printWinnerReport());
     }
 
 
@@ -28,7 +28,7 @@ class PockerTests {
                 .hands("2S", "8S", "AS", "QS", "3S")
             .score();
 
-        assertEquals("Black wins. - with full house", setScore.printReport());
+        assertEquals("Black wins. - with full house", setScore.printWinnerReport());
     }
 
     @Test
@@ -40,7 +40,19 @@ class PockerTests {
                 .hands("2C", "3H", "4S", "8C", "KH")
             .score();
 
-        assertEquals("Black wins. - with high card: 9", setScore.printReport());
+        assertEquals("Black wins. - with high card: 9", setScore.printWinnerReport());
+    }
+
+    @Test
+    void shouldMrWhiteWinsWithRoyalFlush() {
+        SetScore setScore = Pocker.handRanks()
+                .player("Blue")
+                .hands("TH", "JH", "KH", "QH", "AH")
+                .player("White")
+                .hands("2C", "3H", "5C", "9S", "KH")
+                .score();
+
+        assertEquals("Blue wins. - with royal flush", setScore.printWinnerReport());
     }
 
     @Test
@@ -52,6 +64,6 @@ class PockerTests {
                 .hands("2C", "3H", "5C", "9S", "KH")
             .score();
 
-        assertEquals("Tie.", setScore.printReport());
+        assertEquals("Tie.", setScore.printWinnerReport());
     }
 }

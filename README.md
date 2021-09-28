@@ -10,13 +10,13 @@ Pocker projecty prerequite:
 To install projects using gradle, use the following:
 
 ```shell
-gradle install
+./gradlew build
 ```
 
-## Run project uni tests
+## Run project unit tests
 
 To install project unit tests, use the following:
 
 ```shell
-gradle veriy
+./gradlew test
 ```

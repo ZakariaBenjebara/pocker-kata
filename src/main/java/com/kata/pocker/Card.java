@@ -23,10 +23,6 @@ record Card(CardValue value, CardSuit cardSuit) {
         return value.cardScore();
     }
 
-    int priority() {
-        return value.priority();
-    }
-
     boolean hasSameSuit(Card card) {
         return this.cardSuit == card.cardSuit;
     }
@@ -34,9 +30,4 @@ record Card(CardValue value, CardSuit cardSuit) {
     boolean equalsPreviewsPriority(Card card) {
         return this.value.priority() == card.value.priority() + 1;
     }
-
-    boolean hasNumericValue() {
-        return this.value.hasNumericValue();
-    }
-
 }

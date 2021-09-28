@@ -15,7 +15,7 @@ class HandScoringTests {
                 new Card("Q", CardSuit.CLUB),
                 new Card("K", CardSuit.CLUB),
                 new Card("A", CardSuit.CLUB),
-                new Card("10", CardSuit.CLUB)
+                new Card("T", CardSuit.CLUB)
         );
         Rank rank = new Hand(cards).doScore();
         assertTrue(rank instanceof Rank.RoyalFlush);
@@ -53,9 +53,9 @@ class HandScoringTests {
     @Test
     void shouldScoreFullHouse() {
         var cards = Set.of(
-                new Card("10", CardSuit.HEAT),
-                new Card("10", CardSuit.DIAMOND),
-                new Card("10", CardSuit.CLUB),
+                new Card("T", CardSuit.HEAT),
+                new Card("T", CardSuit.DIAMOND),
+                new Card("T", CardSuit.CLUB),
                 new Card("9", CardSuit.SPADE),
                 new Card("9", CardSuit.HEAT)
         );
