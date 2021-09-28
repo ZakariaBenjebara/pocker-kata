@@ -18,4 +18,16 @@ record Card(CardValue value, CardSuit cardSuit) {
         return new Card(new CardValue(String.valueOf(representation.charAt(0))),
                 CardSuit.from(String.valueOf(representation.charAt(1))));
     }
+
+    int cardScore() {
+        return value.cardScore();
+    }
+
+    boolean hasSameSuit(Card card) {
+        return this.cardSuit == card.cardSuit;
+    }
+
+    boolean equalsPreviewsPriority(Card card) {
+        return this.value.priority() == card.value.priority() + 1;
+    }
 }
