@@ -4,8 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class HandScoringTests {
 
@@ -147,7 +146,89 @@ class HandScoringTests {
         Rank rank = new Hand(cards).doScore();
         assertTrue(rank instanceof Rank.HighCard);
         Rank.HighCard highCardRank = (Rank.HighCard) rank;
-        assertEquals(10, highCardRank.priority());
-        assertEquals("J", highCardRank.getCard().value());
+        assertEquals(-1, highCardRank.priority());
+    }
+
+    @Test
+    void shouldScoreAWinnerHighestCard() {
+        var cards1 = Set.of(
+                new Card("3", CardSuit.DIAMOND),
+                new Card("J", CardSuit.HEAT),
+                new Card("9", CardSuit.CLUB),
+                new Card("4", CardSuit.DIAMOND),
+                new Card("2", CardSuit.DIAMOND)
+        );
+        var cards2 = Set.of(
+                new Card("3", CardSuit.HEAT),
+                new Card("J", CardSuit.CLUB),
+                new Card("8", CardSuit.HEAT),
+                new Card("4", CardSuit.CLUB),
+                new Card("2", CardSuit.DIAMOND)
+        );
+        Rank rank1 = new Hand(cards1).doScore();
+        Rank rank2 = new Hand(cards2).doScore();
+        if (rank1 instanceof Rank.HighCard highCard1 && rank2 instanceof Rank.HighCard highCard2) {
+            Rank rankResult = highCard1.winner(highCard2);
+            assertTrue(rankResult instanceof Rank.WinnerHighCard);
+            Rank.WinnerHighCard winner = (Rank.WinnerHighCard) rankResult;
+            assertEquals("9", winner.getCardValue().value());
+        } else {
+            fail("Should return high card ranks");
+        }
+    }
+
+    @Test
+    void shouldScoreALoserHighestCard() {
+        var cards1 = Set.of(
+                new Card("3", CardSuit.HEAT),
+                new Card("J", CardSuit.HEAT),
+                new Card("5", CardSuit.SPADE),
+                new Card("4", CardSuit.DIAMOND),
+                new Card("2", CardSuit.CLUB)
+        );
+        var cards2 = Set.of(
+                new Card("3", CardSuit.DIAMOND),
+                new Card("J", CardSuit.HEAT),
+                new Card("6", CardSuit.CLUB),
+                new Card("4", CardSuit.SPADE),
+                new Card("2", CardSuit.DIAMOND)
+        );
+        Rank rank1 = new Hand(cards1).doScore();
+        Rank rank2 = new Hand(cards2).doScore();
+        if (rank1 instanceof Rank.HighCard highCard1 && rank2 instanceof Rank.HighCard highCard2) {
+            Rank rankResult = highCard1.winner(highCard2);
+            assertTrue(rankResult instanceof Rank.LoserHighCard);
+            Rank.LoserHighCard loser = (Rank.LoserHighCard) rankResult;
+            assertEquals("6", loser.getCardValue().value());
+        } else {
+            fail("Should return high card ranks");
+        }
+    }
+
+    @Test
+    void shouldScoreATieHighestCard() {
+        var cards1 = Set.of(
+                new Card("A", CardSuit.SPADE),
+                new Card("Q", CardSuit.HEAT),
+                new Card("2", CardSuit.DIAMOND),
+                new Card("7", CardSuit.SPADE),
+                new Card("8", CardSuit.CLUB)
+        );
+        var cards2 = Set.of(
+                new Card("A", CardSuit.DIAMOND),
+                new Card("Q", CardSuit.HEAT),
+                new Card("2", CardSuit.CLUB),
+                new Card("7", CardSuit.SPADE),
+                new Card("8", CardSuit.DIAMOND)
+        );
+        Rank rank1 = new Hand(cards1).doScore();
+        Rank rank2 = new Hand(cards2).doScore();
+        if (rank1 instanceof Rank.HighCard highCard1 && rank2 instanceof Rank.HighCard highCard2) {
+            Rank rankResult = highCard1.winner(highCard2);
+            assertTrue(rankResult instanceof Rank.TieHighCard);
+            assertEquals(-1, rankResult.priority());
+        } else {
+            fail("Should return tie ranks");
+        }
     }
 }

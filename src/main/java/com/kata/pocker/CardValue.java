@@ -27,7 +27,7 @@ final class CardValue {
     }
 
     int cardScore() {
-        if (isNumeric(value)) {
+        if (hasNumericValue()) {
             return parseInt(value);
         }
         return switch (value.toUpperCase(Locale.ENGLISH)) {
@@ -38,6 +38,10 @@ final class CardValue {
 
     int priority() {
         return priority;
+    }
+
+    boolean hasNumericValue() {
+        return isNumeric(value);
     }
 
     private static String validateValue(String value) {

@@ -7,7 +7,7 @@ sealed abstract class HandScoring {
     static final class RoyalFlush extends HandScoring {
         @Override
         Rank doScoring(HandStats handStats) {
-            if (handStats.score == 50 && handStats.hasSameSuite) {
+            if (handStats.totalScore == 50 && handStats.hasSameSuite) {
                 return new Rank.RoyalFlush();
             }
             return Rank.NONE;
@@ -17,7 +17,7 @@ sealed abstract class HandScoring {
     static final class StraightFlush extends HandScoring {
         @Override
         Rank doScoring(HandStats handStats) {
-            if (handStats.score < 50 && handStats.hasSequentialSuite && handStats.hasSameSuite) {
+            if (handStats.totalScore < 50 && handStats.hasSequentialSuite && handStats.hasSameSuite) {
                 return new Rank.StraightFlush();
             }
             return Rank.NONE;
@@ -104,7 +104,7 @@ sealed abstract class HandScoring {
     static final class Highest extends HandScoring {
         @Override
         Rank doScoring(HandStats handStats) {
-            return new Rank.HighCard(handStats.highestCardValue);
+            return new Rank.HighCard(handStats.cardValueCounts.keySet());
         }
     }
 }

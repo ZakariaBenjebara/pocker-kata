@@ -4,22 +4,22 @@ import java.util.Arrays;
 
 import static java.util.stream.Collectors.toSet;
 
-public final class Pocker {
-    public static PockerHandRankBuilder handRanks() {
+final class Pocker {
+    static PockerHandRankBuilder handRanks() {
         return new PockerHandRankBuilder();
     }
 
-    public static class PockerHandRankBuilder {
+    static class PockerHandRankBuilder {
         private String playerName;
         private Player player1;
         private Player player2;
 
-        public PockerHandRankBuilder player(String name) {
+        PockerHandRankBuilder player(String name) {
             this.playerName = name;
             return this;
         }
 
-        public PockerHandRankBuilder hands(String... hands) {
+        PockerHandRankBuilder hands(String... hands) {
             var cards = Arrays.stream(hands).map(Card::from).collect(toSet());
             if (player1 == null) {
                 player1 = new Player(playerName, new Hand(cards));
@@ -29,8 +29,10 @@ public final class Pocker {
             return this;
         }
 
-        public SetScore score() {
-            return null;
+        SetScore score() {
+            var score1 = player1.score();
+            var score2 = player2.score();
+            return new SetScore(score1, score2);
         }
     }
 }

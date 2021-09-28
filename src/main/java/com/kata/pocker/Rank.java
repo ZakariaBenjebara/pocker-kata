@@ -1,18 +1,14 @@
 package com.kata.pocker;
 
-sealed abstract class Rank permits Rank.Flush,
-                                    Rank.FourOfKing,
-                                    Rank.FullHouse,
-        Rank.HighCard,
-                                    Rank.None,
-                                    Rank.Pair,
-                                    Rank.RoyalFlush,
-                                    Rank.Straight,
-                                    Rank.StraightFlush,
-                                    Rank.ThreeOfKind,
-                                    Rank.TwoPair
-{
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toCollection;
+
+sealed abstract class Rank permits Rank.Flush, Rank.FourOfKing, Rank.FullHouse, Rank.HighCard, Rank.LoserHighCard, Rank.None, Rank.Pair, Rank.RoyalFlush, Rank.Straight, Rank.StraightFlush, Rank.ThreeOfKind, Rank.TieHighCard, Rank.TwoPair, Rank.WinnerHighCard
+{
     static final None NONE = new None();
 
     private final int priority;
@@ -80,15 +76,65 @@ sealed abstract class Rank permits Rank.Flush,
     }
 
     static final class HighCard extends Rank {
-        private final CardValue card;
+        private final List<CardValue> cardValues;
 
-        HighCard(CardValue card) {
-            super(card.priority());
-            this.card = card;
+        HighCard(Set<CardValue> cardValues) {
+            super(-1);
+            this.cardValues = cardValues.stream()
+                    .sorted(comparing(CardValue::priority).reversed())
+                    .collect(toCollection(LinkedList::new));
         }
 
-        public CardValue getCard() {
-            return card;
+        Rank winner(HighCard that) {
+            for (int i = 0; i < cardValues.size(); i++) {
+                var cardValue1 = cardValues.get(i);
+                var cardValue2 = that.cardValues.get(i);
+                if (cardValue1.priority() != cardValue2.priority()) {
+                    return winnerCard(cardValue1, cardValue2);
+                }
+            }
+            return new TieHighCard();
+        }
+
+        private static Rank winnerCard(CardValue cardValue1, CardValue cardValue2) {
+            if (cardValue1.priority() > cardValue2.priority() ) {
+                return new WinnerHighCard(cardValue1);
+            } else if (cardValue1.priority() < cardValue2.priority()) {
+                return new LoserHighCard(cardValue2);
+            }
+            return new TieHighCard();
+        }
+    }
+
+    static final class WinnerHighCard extends Rank {
+        private CardValue cardValue;
+
+        WinnerHighCard(CardValue cardValue) {
+            super(cardValue.cardScore());
+            this.cardValue = cardValue;
+        }
+
+        public CardValue getCardValue() {
+            return cardValue;
+        }
+    }
+
+    static final class LoserHighCard extends Rank {
+        private CardValue cardValue;
+
+        LoserHighCard(CardValue cardValue) {
+            super(cardValue.cardScore());
+            this.cardValue = cardValue;
+        }
+
+        public CardValue getCardValue() {
+            return cardValue;
+        }
+    }
+
+    static final class TieHighCard extends Rank {
+        TieHighCard() {
+            super(-1);
         }
     }
 
@@ -96,6 +142,5 @@ sealed abstract class Rank permits Rank.Flush,
         None() {
             super(-1);
         }
-
     }
 }

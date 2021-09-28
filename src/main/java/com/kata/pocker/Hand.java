@@ -8,11 +8,11 @@ import java.util.stream.Collectors;
 
 import static java.util.Collections.unmodifiableList;
 
-public final class Hand {
+final class Hand {
     private final Set<Card> cards;
     private final List<HandScoring> handScoringList;
 
-    public Hand(Set<Card> cards) {
+    Hand(Set<Card> cards) {
         if (cards.size() != 5) {
             throw new IllegalArgumentException("Invalid cards list input");
         }
