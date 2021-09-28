@@ -36,7 +36,7 @@ record PlayerScoreView(PlayerScore playerScore) {
             return "full house";
         }
         if (rank instanceof Rank.FourOfKing) {
-            return "four of king";
+            return "four of a king";
         }
         if (rank instanceof Rank.StraightFlush) {
             return "straight flush";
@@ -45,7 +45,7 @@ record PlayerScoreView(PlayerScore playerScore) {
             return "flush";
         }
         if (rank instanceof Rank.ThreeOfKind) {
-            return "three of king";
+            return "three of a king";
         }
         return "";
     }
