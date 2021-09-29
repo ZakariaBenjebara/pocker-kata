@@ -23,17 +23,20 @@ final class Hand {
     }
 
     Rank doScore() {
-        for (var handScoring : handScoringList) {
-            var handStats = HandStats.initialize();
-            for (Card card : cards) {
-                handStats = handStats.analyse(card);
-            }
-            var score = handScoring.doScoring(handStats);
-            if (score != Rank.NONE) {
-                return score;
-            }
+        HandStats handStats = doAnalyseHand();
+        return handScoringList.stream()
+            .map(handScoring -> handScoring.doScoring(handStats))
+            .filter(rank -> rank != Rank.NONE)
+            .findFirst()
+            .orElse(Rank.NONE);
+    }
+
+    private HandStats doAnalyseHand() {
+        var handStats = HandStats.initialize();
+        for (Card card : cards) {
+            handStats = handStats.analyse(card);
         }
-        return Rank.NONE;
+        return handStats;
     }
 
     private static List<HandScoring> initHandScoringList() {
