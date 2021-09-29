@@ -5,6 +5,8 @@ import java.util.Arrays;
 import static java.util.stream.Collectors.toSet;
 
 final class Pocker {
+    private Pocker() {}
+
     static PockerHandRankBuilder handRanks() {
         return new PockerHandRankBuilder();
     }

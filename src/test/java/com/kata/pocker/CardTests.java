@@ -1,9 +1,13 @@
 package com.kata.pocker;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class CardTests {
 
@@ -101,5 +105,59 @@ class CardTests {
         var cardValue = new CardValue("A");
         assertEquals(13, cardValue.priority());
         assertEquals(10, cardValue.cardScore());
+    }
+
+    @ParameterizedTest
+    @MethodSource("orderedByNextPriorityCards")
+    void shouldCardHasNextPriority(Card card1, Card card2) {
+        var result = card2.equalsPreviewsPriority(card1);
+        assertTrue(result);
+    }
+
+    @Test
+    void shouldntCardHasNextPriority() {
+        var card1 = Card.from("5H");
+        var card2 = Card.from("AD");
+        var result = card2.equalsPreviewsPriority(card1);
+        assertFalse(result);
+    }
+
+    @ParameterizedTest
+    @MethodSource("sameCardSuits")
+    void shouldCardHasSameSuit(Card card1, Card card2) {
+        var result = card2.hasSameSuit(card1);
+        assertTrue(result);
+    }
+
+    @Test
+    void shouldntCardHasSameSuit() {
+        var card1 = Card.from("3C");
+        var card2 = Card.from("KS");
+        var result = card2.hasSameSuit(card1);
+        assertFalse(result);
+    }
+
+    static Stream<Arguments> orderedByNextPriorityCards() {
+        return Stream.of(
+                Arguments.of(Card.from("2H"), Card.from("3D")),
+                Arguments.of(Card.from("3S"), Card.from("4C")),
+                Arguments.of(Card.from("5H"), Card.from("6D")),
+                Arguments.of(Card.from("7S"), Card.from("8C")),
+                Arguments.of(Card.from("9H"), Card.from("TD")),
+                Arguments.of(Card.from("JS"), Card.from("QC")),
+                Arguments.of(Card.from("KH"), Card.from("AD"))
+        );
+    }
+
+    static Stream<Arguments> sameCardSuits() {
+        return Stream.of(
+                Arguments.of(Card.from("2H"), Card.from("3H")),
+                Arguments.of(Card.from("3D"), Card.from("4D")),
+                Arguments.of(Card.from("5C"), Card.from("2C")),
+                Arguments.of(Card.from("7S"), Card.from("4S")),
+                Arguments.of(Card.from("9H"), Card.from("TH")),
+                Arguments.of(Card.from("QS"), Card.from("AS")),
+                Arguments.of(Card.from("8C"), Card.from("6C"))
+        );
     }
 }
