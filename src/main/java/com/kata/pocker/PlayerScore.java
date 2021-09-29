@@ -1,6 +1,6 @@
 package com.kata.pocker;
 
-record PlayerScore(String name, Rank rank) {
+record PlayerScore(PlayerName name, Rank rank) {
 
     SetScore whoWins(PlayerScore opponent) {
         if (shouldCalculateHighCardScore(opponent)) {
@@ -8,6 +8,10 @@ record PlayerScore(String name, Rank rank) {
         } else {
             return calculateTotalScore(opponent);
         }
+    }
+
+    public String nameValue() {
+        return name.value();
     }
 
     private SetScore calculateTotalScore(PlayerScore opponent) {

@@ -19,7 +19,7 @@ final class Pocker {
 
         PockerHandRankBuilder player(String name) {
             if (isAlreadyUsed(name)) {
-                throw new IllegalArgumentException("Invalid player name, this name is already exist");
+                throw new IllegalArgumentException("Invalid player name, this name %s is already exist".formatted(name));
             }
             this.playerName = name;
             return this;

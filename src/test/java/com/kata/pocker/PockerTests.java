@@ -1,5 +1,6 @@
 package com.kata.pocker;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -8,6 +9,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PockerTests {
 
@@ -165,6 +167,27 @@ class PockerTests {
             .score();
 
         assertEquals("Pink wins. - with pair", setScore.printWinnerReport());
+    }
+
+    @Test
+    void shouldThrowsInvalidPlayerNameWhenTheNameIsAlreadyUsed() {
+        var exception = assertThrows(IllegalArgumentException.class, () -> Pocker.handRanks()
+            .player("Blue")
+                .hands("2H", "3D", "5S", "9C", "KD")
+            .player("Blue")
+            .score());
+
+        assertEquals(exception.getMessage(), "Invalid player name, this name Blue is already exist");
+    }
+
+    @Test
+    void shouldThrowsExceptionWhenPlayerNameIsInvalid() {
+        var exception = assertThrows(IllegalArgumentException.class, () -> Pocker.handRanks()
+                .player("Hi")
+                .hands("2H", "3D", "5S", "9C", "KD")
+        );
+
+        assertEquals(exception.getMessage(), "Invalid player name Hi");
     }
 
     @ParameterizedTest

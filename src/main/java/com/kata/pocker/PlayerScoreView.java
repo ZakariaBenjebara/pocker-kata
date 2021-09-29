@@ -6,7 +6,7 @@ record PlayerScoreView(PlayerScore playerScore) {
         if (playerScore.rank() instanceof Rank.TieHighCard) {
             return "Tie.";
         }
-        return new StringBuilder(playerScore.name())
+        return new StringBuilder(playerScore.nameValue())
                 .append(" wins.")
                 .append(" - with ")
                 .append(toRankView(playerScore.rank()))
