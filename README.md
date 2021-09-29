@@ -62,19 +62,22 @@ private static int asPriority(String value) {
 2. Process a hard hand to calculate hand stats.
    See `Hand` class:
 ```java
-    Rank doScore() {
-        for (var handScoring : handScoringList) {
-            var handStats = HandStats.initialize();
-            for (Card card : cards) {
-                handStats = handStats.analyse(card);
-            }
-            var score = handScoring.doScoring(handStats);
-            if (score != Rank.NONE) {
-                return score;
-            }
-        }
-        return Rank.NONE;
+Rank doScore() {
+    HandStats handStats = doAnalyseHand();
+    return handScoringList.stream()
+        .map(handScoring -> handScoring.doScoring(handStats))
+        .filter(rank -> rank != Rank.NONE)
+        .findFirst()
+        .orElse(Rank.NONE);
+}
+
+private HandStats doAnalyseHand() {
+    var handStats = HandStats.initialize();
+    for (Card card : cards) {
+        handStats = handStats.analyse(card);
     }
+    return handStats;
+}
 ```
 Here is `HandStats` structure:
 ```java
@@ -106,10 +109,11 @@ record HandStats(int totalScore, boolean hasSameSuite, boolean hasSequentialSuit
 
 3. Then we pass a `HandStats` instance to each `HandScoring` instances (those also ordered by priority), the algorithm stop when we found a nonempty output (instance of `Rank`), otherwise we return an empty value:
 ```java
-var score = handScoring.doScoring(handStats);
-if (score != Rank.NONE) {
-    return score;
-}
+handScoringList.stream()
+    .map(handScoring -> handScoring.doScoring(handStats))
+    .filter(rank -> rank != Rank.NONE)
+    .findFirst()
+    .orElse(Rank.NONE);
 ```
 `HandScoring` list order maintained on `Hand` instance creation:
 ```java
