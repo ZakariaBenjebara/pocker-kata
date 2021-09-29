@@ -8,11 +8,11 @@ record SetScore(PlayerScore winner, PlayerScore loser) {
     }
 
     String printWinnerReport() {
-        return Report.winner(winner).view();
+        return Report.createReportFor(winner).view();
     }
 
     private record Report(String view) {
-        static Report winner(PlayerScore playerScore) {
+        static Report createReportFor(PlayerScore playerScore) {
             return new Report(new PlayerScoreView(playerScore).toView());
         }
     }

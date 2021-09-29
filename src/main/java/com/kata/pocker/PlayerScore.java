@@ -26,7 +26,7 @@ record PlayerScore(PlayerName name, Rank rank) {
     private SetScore calculateHighCardScoreWinner(PlayerScore opponent) {
         var thisRank = (Rank.HighCard) this.rank;
         var opponentRank = (Rank.HighCard) opponent.rank;
-        var result = thisRank.winner(opponentRank);
+        var result = thisRank.whoWins(opponentRank);
         if (result instanceof Rank.WinnerHighCard) {
             return new SetScore(new PlayerScore(this.name, result), opponent);
         } else if (result instanceof Rank.LoserHighCard) {

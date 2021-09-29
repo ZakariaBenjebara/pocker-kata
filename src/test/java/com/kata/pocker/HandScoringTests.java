@@ -168,7 +168,7 @@ class HandScoringTests {
         Rank rank1 = new Hand(cards1).doScore();
         Rank rank2 = new Hand(cards2).doScore();
         if (rank1 instanceof Rank.HighCard highCard1 && rank2 instanceof Rank.HighCard highCard2) {
-            Rank rankResult = highCard1.winner(highCard2);
+            Rank rankResult = highCard1.whoWins(highCard2);
             assertTrue(rankResult instanceof Rank.WinnerHighCard);
             Rank.WinnerHighCard winner = (Rank.WinnerHighCard) rankResult;
             assertEquals("9", winner.getCardValue().value());
@@ -196,7 +196,7 @@ class HandScoringTests {
         Rank rank1 = new Hand(cards1).doScore();
         Rank rank2 = new Hand(cards2).doScore();
         if (rank1 instanceof Rank.HighCard highCard1 && rank2 instanceof Rank.HighCard highCard2) {
-            Rank rankResult = highCard1.winner(highCard2);
+            Rank rankResult = highCard1.whoWins(highCard2);
             assertTrue(rankResult instanceof Rank.LoserHighCard);
             Rank.LoserHighCard loser = (Rank.LoserHighCard) rankResult;
             assertEquals("6", loser.getCardValue().value());
@@ -224,7 +224,7 @@ class HandScoringTests {
         Rank rank1 = new Hand(cards1).doScore();
         Rank rank2 = new Hand(cards2).doScore();
         if (rank1 instanceof Rank.HighCard highCard1 && rank2 instanceof Rank.HighCard highCard2) {
-            Rank rankResult = highCard1.winner(highCard2);
+            Rank rankResult = highCard1.whoWins(highCard2);
             assertTrue(rankResult instanceof Rank.TieHighCard);
             assertEquals(-1, rankResult.priority());
         } else {

@@ -99,7 +99,7 @@ sealed abstract class Rank permits
                     .collect(toCollection(LinkedList::new));
         }
 
-        Rank winner(HighCard that) {
+        Rank whoWins(HighCard that) {
             for (int i = 0; i < cardValues.size(); i++) {
                 var cardValue1 = cardValues.get(i);
                 var cardValue2 = that.cardValues.get(i);
