@@ -7,7 +7,7 @@ import static java.lang.Integer.parseInt;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 final class CardValue {
-    private static final String CARD_SYMBOLS = "(?i)[2-9]{1}|T|J|Q|K|A";
+    private static final String CARD_SYMBOLS = "(?i)[2-9]|T|J|Q|K|A";
 
     private final String value;
     private final int priority;

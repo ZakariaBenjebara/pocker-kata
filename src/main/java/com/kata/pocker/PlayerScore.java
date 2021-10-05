@@ -2,7 +2,7 @@ package com.kata.pocker;
 
 record PlayerScore(PlayerName name, Rank rank) {
 
-    SetScore whoWins(PlayerScore opponent) {
+    ScoreSet whoWins(PlayerScore opponent) {
         if (shouldCalculateHighCardScore(opponent)) {
             return calculateHighCardScoreWinner(opponent);
         } else {
@@ -14,25 +14,25 @@ record PlayerScore(PlayerName name, Rank rank) {
         return name.value();
     }
 
-    private SetScore calculateTotalScore(PlayerScore opponent) {
+    private ScoreSet calculateTotalScore(PlayerScore opponent) {
         if (score() > opponent.score()) {
-            return new SetScore(this, opponent);
+            return new ScoreSet(this, opponent);
         } else if (score() < opponent.score()) {
-            return new SetScore(opponent, this);
+            return new ScoreSet(opponent, this);
         }
-        return SetScore.tie(this.name(), opponent.name());
+        return ScoreSet.tie(this.name(), opponent.name());
     }
 
-    private SetScore calculateHighCardScoreWinner(PlayerScore opponent) {
+    private ScoreSet calculateHighCardScoreWinner(PlayerScore opponent) {
         var thisRank = (Rank.HighCard) this.rank;
         var opponentRank = (Rank.HighCard) opponent.rank;
         var result = thisRank.whoWins(opponentRank);
         if (result instanceof Rank.WinnerHighCard) {
-            return new SetScore(new PlayerScore(this.name, result), opponent);
+            return new ScoreSet(new PlayerScore(this.name, result), opponent);
         } else if (result instanceof Rank.LoserHighCard) {
-            return new SetScore(new PlayerScore(opponent.name, result), this);
+            return new ScoreSet(new PlayerScore(opponent.name, result), this);
         }
-        return SetScore.tie(this.name(), opponent.name());
+        return ScoreSet.tie(this.name(), opponent.name());
     }
 
     private boolean shouldCalculateHighCardScore(PlayerScore opponent) {

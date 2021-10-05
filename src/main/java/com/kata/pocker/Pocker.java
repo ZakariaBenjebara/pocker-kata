@@ -39,7 +39,7 @@ final class Pocker {
             return isNotBlank(playerName) && playerName.equals(name);
         }
 
-        SetScore score() {
+        ScoreSet score() {
             var playerScore1 = player1.score();
             var playerScore2 = player2.score();
             return playerScore1.whoWins(playerScore2);
