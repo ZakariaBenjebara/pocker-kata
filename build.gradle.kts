@@ -1,6 +1,5 @@
 
 repositories {
-    jcenter()
     mavenCentral()
 }
 
@@ -14,6 +13,10 @@ plugins {
 java {
     sourceCompatibility = JavaVersion.VERSION_16
     targetCompatibility = JavaVersion.VERSION_16
+}
+
+jacoco {
+    toolVersion = "0.8.7"
 }
 
 allprojects {
@@ -50,5 +53,17 @@ tasks {
         options.compilerArgs.add("--enable-preview")
     }
 }
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+}
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+        html.required.set(false)
+    }
+    dependsOn(tasks.test) // tests are required to run before generating the report
+}
+
 
 
