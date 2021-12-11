@@ -30,9 +30,7 @@ jobs:
       with:
         arguments: build
     - uses: codecov/codecov-action@v2.1.0
-      if: ${{ matrix.coverage }}
     - uses: actions/upload-artifact@v2
-      if: ${{ matrix.coverage }}
       with:
         name: coverage-report
-        path: build/reports/jacoco/test/html
+        path: build/reports/tests/test
