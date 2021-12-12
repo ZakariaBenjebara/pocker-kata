@@ -1,6 +1,6 @@
 # Pocker kata excercice
 
-Pocker projecty prerequite:
+Pocker project prerequisite:
 
 *   The JRE flavor requires JDK 16 or higher.
 *   Gradle as build tools.
@@ -15,7 +15,7 @@ To install projects using gradle, use the following:
 
 ## Run project unit tests
 
-To install project unit tests, use the following:
+To run project unit tests, use the following:
 
 ```shell
 ./gradlew test
@@ -59,7 +59,7 @@ private static int asPriority(String value) {
     };
 }
 ```
-2. Process a hard hand to calculate hand stats.
+2. Process a hand to calculate hand stats.
    See `Hand` class:
 ```java
 Rank doScore() {
@@ -82,7 +82,7 @@ private HandStats doAnalyseHand() {
 Here is `HandStats` structure:
 ```java
 record HandStats(int totalScore, boolean hasSameSuite, boolean hasSequentialSuite,
-                   Card previewsCard,
+                   Card previousCard,
                    Map<CardValue, Integer> cardValueCounts) {
 
     static HandStats initialize() {
@@ -93,16 +93,16 @@ record HandStats(int totalScore, boolean hasSameSuite, boolean hasSequentialSuit
     HandStats analyse(Card card) {
         var totalScore = this.totalScore + card.cardScore();;
         var cardValueCounts = new HashMap<>(this.cardValueCounts);
-        var previewsCard = this.previewsCard;
+        var previousCard = this.previousCard;
         var hasSameSuite = this.hasSameSuite;
         var hasSequentialSuite = this.hasSequentialSuite;
         cardValueCounts.compute(card.value(), (k, v) -> v == null ? 1 : v + 1);
         if (previewsCard != null) {
-            hasSameSuite &= card.hasSameSuit(previewsCard);
-            hasSequentialSuite &= card.equalsPreviewsPriority(previewsCard);
+            hasSameSuite &= card.hasSameSuit(previousCard);
+            hasSequentialSuite &= card.equalsPreviousPriority(previousCard);
         }
         previewsCard = card;
-        return new HandStats(totalScore, hasSameSuite, hasSequentialSuite, previewsCard, Map.copyOf(cardValueCounts));
+        return new HandStats(totalScore, hasSameSuite, hasSequentialSuite, previousCard, Map.copyOf(cardValueCounts));
     }
 }
 ```
